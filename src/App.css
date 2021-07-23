@@ -23,3 +23,12 @@ th, td {
   text-align: left;
   padding: 10px;
 }
+
+.login-form--container {
+    width: 40%;
+    margin: auto;
+}
+
+.login-from--title {
+    text-align: center;
+}

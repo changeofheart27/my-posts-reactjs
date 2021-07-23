@@ -1,29 +1,14 @@
 import { Formik } from "formik";
-import { useState } from "react";
 import axios from "axios";
+import {Form, Button, Row} from "react-bootstrap";
+import "../App.css";
 
 const initialValues = {
-  username: "",
-  gender: "",
   email: "",
-  password: "",
-  confirmPassword: "",
-  checked: false,
+  password: ""
 };
 const validateValues = (values) => {
   const errors = {};
-  //test validation for username field
-  if (!values.username) {
-    errors.username = "Username is required";
-  } else if (values.username.length < 4) {
-    errors.username = "Username must be at least 4 characters";
-  } else if (!/^[0-9a-zA-Z]+$/.test(values.username)) {
-    errors.username = "Username can contain numbers and characters only";
-  }
-  //test validation for gender field
-  if (!values.gender) {
-    errors.gender = "Gender is required";
-  }
   //test validation for email field
   if (!values.email) {
     errors.email = "Email is required";
@@ -36,46 +21,32 @@ const validateValues = (values) => {
   } else if (values.password.length < 8) {
     errors.password = "Password must be at least 8 characters";
   }
-  //test validation for confirm password field
-  if (values.confirmPassword !== values.password) {
-    errors.confirmPassword = "Passwords must match";
-  }
-  //test validation for checkbox field
-  if (!values.checked) {
-    errors.checked = "You must check the agreement";
-  }
+  
   return errors;
 };
 
 
-const LoginPage = ({currentUser, setCurrentUser}) => {
-  
-
+const LoginPage = ({ currentUser, setCurrentUser, title }) => {
   const onSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
-
     axios
       .get("https://60dff0ba6b689e001788c858.mockapi.io/token", {
         email: values.email,
         password: values.password,
       })
-      .then((response) => {
+      .then(response => {
+        console.log(response);
+        setSubmitting(false);
         setCurrentUser({
           token: response.data.token,
-          userId: response.data.userId,
+          userId: response.data.userId
         });
+        axios.defaults.headers.common["Authorization"] = response.data.token;
       });
-      
   };
-
   console.log("Current User = ", currentUser);
 
     return (
-      <div>
-        <h1>Login Form with Formik</h1>
+      <div className="app container">
         <Formik
           initialValues={initialValues}
           validate={validateValues}
@@ -90,88 +61,50 @@ const LoginPage = ({currentUser, setCurrentUser}) => {
             handleSubmit,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="username">Username: </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.username && touched.username && errors.username}
-              </div>
+            <div className="login-form--container">
+              <h3 className="login-from--title">Enter your credentials</h3><br/>
+              {title && <h5>{title}</h5>}
+              {/* {console.log("errors = ", errors)} */}
+              <Form noValidate onSubmit={handleSubmit}>
+                <Row className="mb-3">
+                  <Form.Group controlId="validationFormik01">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      isValid={touched.email && !errors.email}
+                      isInvalid={touched.email && errors.email}
+                      className="login-input"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group controlId="validationFormik02">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      isValid={touched.password && !errors.password}
+                      isInvalid={touched.password && errors.password}
+                      className="login-input"
+                    />
 
-              <div>
-                <label htmlFor="gender">Gender: </label>
-                <select
-                  name="gender"
-                  value={values.gender}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                >
-                  <option selected value="" label="Choose a gender" />
-                  <option value="male" label="Male" />
-                  <option value="female" label="Female" />
-                </select>
-                {errors.gender && touched.gender && errors.gender}
-              </div>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
 
-              <div>
-                <label htmlFor="email">Email: </label>
-                <input
-                  type="email"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-                {errors.email && touched.email && errors.email}
-              </div>
-
-              <div>
-                <label htmlFor="password">Password: </label>
-                <input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                />
-                {errors.password && touched.password && errors.password}
-              </div>
-
-              <div>
-                <label htmlFor="confirmPassword">Confirm Password: </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.confirmPassword}
-                />
-                {errors.confirmPassword &&
-                  touched.confirmPassword &&
-                  errors.confirmPassword}
-              </div>
-
-              <div>
-                <input
-                  type="checkbox"
-                  name="checked"
-                  value={values.checked}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <label htmlFor="checked">I have read the agreement</label>
-                {errors.checked && touched.checked && errors.checked}
-              </div>
-
-              <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button>
-            </form>
+                <Button type="submit">Submit form</Button>
+              </Form>
+            </div>
           )}
         </Formik>
       </div>

@@ -1,25 +1,17 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import CurrentUserContext from "../context/currentUserContext";
-import LoginPage from "./LoginPage";
+import { useEffect, useState } from "react";
+import "../App.css";
 
-const ProfilePage = () => {
-    const currentUser = useContext(CurrentUserContext);
-    const isLogin = currentUser.token !== null;
-
+const ProfilePage = ({currentUser}) => {
     const [profile, setProfile] = useState({
       name: "",
       id: null,
       createdAt: null,
     });
 
-    let didCancel = false;
     useEffect(() => {
-        axios.get(`https://60dff0ba6b689e001788c858.mockapi.io/users/${currentUser.userId}`, {
-            headers: {
-                "Authorization" : currentUser.token
-            }
-        })
+        let didCancel = false;
+        axios.get(`https://60dff0ba6b689e001788c858.mockapi.io/users/${currentUser.userId}`)
         .then(response => {
             if (!didCancel) {
                 setProfile({
@@ -32,16 +24,13 @@ const ProfilePage = () => {
         return () => didCancel = true;
     }, [currentUser.userId, currentUser.token]);
 
-    if (!isLogin) {
-        return <LoginPage/>
-    }
 
-    
     return (
-        <div>
-            <p>Testing</p>    
-        </div>
-    )
+      <div>
+        <p>Username: {profile.name}</p>
+        <p>Created At: {profile.createdAt}</p>
+      </div>
+    );
 }
 
 export default ProfilePage;
