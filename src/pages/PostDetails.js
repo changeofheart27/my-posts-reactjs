@@ -4,10 +4,12 @@ import axios from "axios";
 import { useParams } from "react-router";
 
 const PostDetails = () => {
-  const [post, setPost] = useState();
+  const [post, setPost] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
+    setIsLoading(false);
     axios
       .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then((response) => {
@@ -16,6 +18,9 @@ const PostDetails = () => {
       });
   }, [id]);
 
+  if (isLoading) {
+    return <h3>Loading...</h3>;
+  }
   return (
     <div>
       <h3>{post.title}</h3>

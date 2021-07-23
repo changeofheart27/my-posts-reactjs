@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PostsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +53,8 @@ const PostsPage = () => {
               <td>{post.id}</td>
               <td>{post.title}</td>
               <td>
-                <a href={`/posts/${post.id}`}>View Detail</a>
+                {/* <a href={`/posts/${post.id}`}>View Detail</a> */}
+                <Link to={`/posts/${post.id}`}>View Detail</Link>
               </td>
             </tr>
           ))}
