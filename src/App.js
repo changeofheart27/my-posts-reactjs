@@ -1,97 +1,92 @@
 import React from "react";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-// import "./App.css";
-// import HomePage from "./pages/HomePage";
-// import PostsPage from "./pages/PostsPage";
-// import ProfilePage from "./pages/ProfilePage";
-// import LoginPage from "./pages/LoginPage";
-// import PostDetails from "./pages/PostDetails";
-
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import { useState } from "react";
-import HomePage from "./pagesFinalProject/HomePage";
-import "./css/style.css";
-import "./css/reset.css";
-import AboutPage from "./pagesFinalProject/AboutPage";
-import PostsPage from "./pagesFinalProject/PostsPage";
-import LoginPage from "./pagesFinalProject/LoginPage";
-import Header from "./componentsFinalProject/Header/Header";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import PostsPage from "./pages/PostsPage";
+import LoginPage from "./pages/LoginPage";
+import PostDetailsPage from "./pages/PostDetailsPage";
+import PostEditPage from "./pages/PostEditPage";
+import AdminStatisticPage from "./pages/AdminStatisticPage";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({
-    token: null,
-    userId: null,
+    token: localStorage.getItem("token") ?? ""
   });
 
-  return (
-    // <Router>
-    //   <div className="app"></div>
-    //   <div>
-    //     <nav>
-    //       <ul>
-    //         <li>
-    //           <Link to="/">Home</Link>
-    //         </li>
-    //         <li>
-    //           <Link to="/posts">Posts</Link>
-    //         </li>
-    //         <li>
-    //           <Link to="/profile">Profile</Link>
-    //         </li>
-    //         <li>
-    //           <Link to="/login">Login</Link>
-    //         </li>
-    //       </ul>
-    //     </nav>
-    //     <Switch>
-    //       <Route path="/" exact>
-    //         <HomePage />
-    //       </Route>
-    //       <Route path="/posts" exact>
-    //         <PostsPage />
-    //       </Route>
-    //       <Route path="/posts/:id">
-    //         <PostDetails />
-    //       </Route>
-    //       <Route
-    //         path="/profile"
-    //         render={() => {
-    //           if (currentUser.userId === null) {
-    //             return (
-    //               <LoginPage
-    //                 currentUser={currentUser}
-    //                 setCurrentUser={setCurrentUser}
-    //                 title="You need to login before using this page"
-    //               />
-    //             );
-    //           } else {
-    //             return <ProfilePage currentUser={currentUser} />;
-    //           }
-    //         }}
-    //       ></Route>
-    //       <Route path="/login">
-    //         <LoginPage
-    //           currentUser={currentUser}
-    //           setCurrentUser={setCurrentUser}
-    //         />
-    //       </Route>
-    //     </Switch>
-    //   </div>
-    // </Router>
 
+  return (
     <div className="app">
       <Router>
         <Switch>
+          <Route path="/" exact>
+            <Redirect to="/home" />
+          </Route>
           <Route path="/home" component={HomePage}>
-            <HomePage />
+            <HomePage currentUser={currentUser} />
           </Route>
           <Route path="/about" component={AboutPage}>
             <AboutPage />
           </Route>
           <Route path="/posts" exact component={PostsPage}>
-            <PostsPage />
+            <PostsPage currentUser={currentUser} />
           </Route>
+          <Route
+            path="/post/postdetails/:id"
+            render={() => {
+              if (currentUser.token.length === 0) {
+                return (
+                  <LoginPage
+                    currentUser={currentUser}
+                    setCurrentUser={setCurrentUser}
+                    message="Please login to continue"
+                  />
+                );
+              } else {
+                return <PostDetailsPage currentUser={currentUser} />;
+              }
+            }}
+          ></Route>
+          <Route
+            path="/post/postedit/:id"
+            render={() => {
+              if (currentUser.token.length === 0) {
+                return (
+                  <LoginPage
+                    currentUser={currentUser}
+                    setCurrentUser={setCurrentUser}
+                    message="Please login to continue"
+                  />
+                );
+              } else {
+                return <PostEditPage currentUser={currentUser} />;
+              }
+            }}
+          ></Route>
           <Route path="/login" component={LoginPage}>
-            <LoginPage />
+            <LoginPage
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          </Route>
+          <Route
+            path="/logout"
+            render={() => {
+              localStorage.clear();
+              currentUser.token = "";
+              return (
+                <LoginPage
+                  currentUser={currentUser}
+                  setCurrentUser={setCurrentUser}
+                  title="You have been signed out"
+                />
+              );
+            }}
+          ></Route>
+          <Route path="/admin/statistic" component={AdminStatisticPage}>
+            <AdminStatisticPage 
+              currentUser={currentUser}
+            />
           </Route>
         </Switch>
       </Router>

@@ -1,5 +1,6 @@
 /* 
 NAVIGATION BAR + HEADER is styled based on the help of trainer Ocean Nguyen (Nguyen Dai Duong)
+and Do Thi Thu <3
 */
 
 body {
@@ -54,13 +55,25 @@ ul.navbar-nav li a:hover {
 
 
 /* HEADER */
-header.masthead {
-    background-image: url('../images/background-header.jpg');
+header.masthead { 
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     position: relative;
 }
+
+header.masthead.home {
+    background-image: url('../images/bg-header-home.jpg');
+}
+
+header.masthead.about {
+    background-image: url('../images/bg-header-about.jpg');
+}
+
+header.masthead.posts {
+    background-image: url('../images/bg-header-post.jpg');
+}
+
 
 /* add dark filter to header background image */
 header.masthead .overlay {
@@ -162,6 +175,16 @@ article a:hover {
     margin-bottom: 20px;
 }
 
+.article-content {
+    width: 80%;
+    margin: auto;
+}
+
+.article-content h1 {
+    text-align: center;
+    padding: 30px;
+}
+
 .btn-post {
     border: none;
     background-color: #0085A1;
@@ -219,3 +242,13 @@ footer p {
     padding: 10px;
 }
 /* END FOOTER */
+
+/* ABOUT PAGE*/
+.about-me {
+    font-size: 1.5em;
+    line-height: 1.5;
+    margin: auto;
+    padding: 30px;
+    width: 60%;
+}
+
