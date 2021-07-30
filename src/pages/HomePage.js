@@ -48,7 +48,7 @@ const HomePage = ({ currentUser }) => {
               <h3 className="article-info">{post.description}</h3>
             </Link>
             <p className="article-metadata">
-              Posted by Hieu Duong on {post.createdDate} · 8 mins read
+              Posted by {post.authorDTO.lastName} {post.authorDTO.firstName} on {post.createdDate} · 8 mins read
             </p>
             <Link to={`/post/postedit/${post.id}`}>Edit</Link>
             <br />
@@ -58,7 +58,7 @@ const HomePage = ({ currentUser }) => {
         ))}
 
         <Link to="/posts">
-          <button class="btn-post" type="submit">
+          <button className="btn-post" type="submit">
             View All Posts →
           </button>
         </Link>

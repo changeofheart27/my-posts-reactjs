@@ -10,29 +10,29 @@ const Header = () => {
   //console.log(location);
 
   return (
-    <header class={"masthead " + location}>
-      <div class="overlay"></div>
+    <header className={"masthead " + location}>
+      <div className="overlay"></div>
       <nav className="navbar navbar-expand-lg">
         <Navbar />
       </nav>
-      <div class="clearfix"></div>
+      <div className="clearfix"></div>
 
-      <div class="page-heading">
-        <div class="container">
+      <div className="page-heading">
+        <div className="container">
           {location === "home" ? (
             <>
-              <h1 class="heading">Ocean Nguyen</h1>
-              <span class="sub-heading">Enginner/Video Creator</span>
+              <h1 className="heading">Ocean Nguyen</h1>
+              <span className="sub-heading">Enginner/Video Creator</span>
             </>
           ) : location === "about" ? (
             <>
-              <h1 class="heading">About me</h1>
-              <span class="sub-heading">This is what I do.</span>
+              <h1 className="heading">About me</h1>
+              <span className="sub-heading">This is what I do.</span>
             </>
           ) : (
             <>
-              <h1 class="heading">Posts</h1>
-              <span class="sub-heading">New posts every week.</span>
+              <h1 className="heading">Posts</h1>
+              <span className="sub-heading">New posts every week.</span>
             </>
           )}
         </div>

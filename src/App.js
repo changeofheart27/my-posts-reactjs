@@ -8,12 +8,14 @@ import LoginPage from "./pages/LoginPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import PostEditPage from "./pages/PostEditPage";
 import AdminStatisticPage from "./pages/AdminStatisticPage";
+import Logout from "./components/Logout/Logout";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({
     token: localStorage.getItem("token") ?? ""
   });
 
+  console.log("Token: " + localStorage.getItem("token"));
 
   return (
     <div className="app">
@@ -22,13 +24,13 @@ const App = () => {
           <Route path="/" exact>
             <Redirect to="/home" />
           </Route>
-          <Route path="/home" component={HomePage}>
+          <Route path="/home">
             <HomePage currentUser={currentUser} />
           </Route>
-          <Route path="/about" component={AboutPage}>
+          <Route path="/about">
             <AboutPage />
           </Route>
-          <Route path="/posts" exact component={PostsPage}>
+          <Route path="/posts" exact>
             <PostsPage currentUser={currentUser} />
           </Route>
           <Route
@@ -63,7 +65,19 @@ const App = () => {
               }
             }}
           ></Route>
-          <Route path="/login" component={LoginPage}>
+          <Route
+            path="/login"
+            // render={() => {
+            //   if (currentUser.token.length === 0) {
+            //     return (
+            //       <LoginPage
+            //         currentUser={currentUser}
+            //         setCurrentUser={setCurrentUser}
+            //       />
+            //     );
+            //   }
+            // }}
+          >
             <LoginPage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
@@ -71,22 +85,23 @@ const App = () => {
           </Route>
           <Route
             path="/logout"
-            render={() => {
-              localStorage.clear();
-              currentUser.token = "";
-              return (
-                <LoginPage
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                  title="You have been signed out"
-                />
-              );
-            }}
-          ></Route>
-          <Route path="/admin/statistic" component={AdminStatisticPage}>
-            <AdminStatisticPage 
+            // render={() => {
+            //   return (
+            //     <LoginPage
+            //       currentUser={currentUser}
+            //       setCurrentUser={setCurrentUser}
+            //       title="You have been signed out"
+            //     />
+            //   );
+            // }}
+          >
+            <Logout
               currentUser={currentUser}
+              title="You have been signed out"
             />
+          </Route>
+          <Route path="/admin/statistic">
+            <AdminStatisticPage currentUser={currentUser} />
           </Route>
         </Switch>
       </Router>

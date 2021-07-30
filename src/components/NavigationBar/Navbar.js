@@ -22,12 +22,16 @@ const Navbar = () => {
           <li>
             <Link to="/posts">Posts</Link>
           </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/logout">Logout</Link>
-          </li>
+          {localStorage.getItem("token") === null && (
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+          {localStorage.getItem("token") !== null && (
+            <li>
+              <Link to="/logout">Logout</Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>

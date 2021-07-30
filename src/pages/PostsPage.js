@@ -31,8 +31,11 @@ const PostsPage = ({ currentUser }) => {
   return (
     <div>
       <Header />
-      {currentUser.token.length === 0 && 
-      <h3 style={{textAlign:"center", marginTop: 30}}>Please login to see posts.</h3>}
+      {currentUser.token.length === 0 && (
+        <h3 style={{ textAlign: "center", marginTop: 30 }}>
+          Please login to see posts.
+        </h3>
+      )}
       <div className="article-post">
         {posts.map((post) => (
           <article key={post.id}>
@@ -41,7 +44,8 @@ const PostsPage = ({ currentUser }) => {
               <h3 className="article-info">{post.description}</h3>
             </Link>
             <p className="article-metadata">
-              Posted by Hieu Duong on {post.createdDate} · 8 mins read
+              Posted by {post.authorDTO.lastName} {post.authorDTO.firstName} on {post.createdDate} · 8 mins
+              read
             </p>
             <hr />
           </article>
